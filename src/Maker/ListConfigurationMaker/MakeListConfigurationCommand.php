@@ -2,7 +2,6 @@
 
 namespace FriendsOfSulu\MakerBundle\Maker\ListConfigurationMaker;
 
-use Doctrine\Persistence\Mapping\ClassMetadata;
 use FriendsOfSulu\MakerBundle\Utils\ConsoleHelperTrait;
 use FriendsOfSulu\MakerBundle\Utils\NameGenerators\UniqueNameGenerator;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -107,7 +106,7 @@ final class MakeListConfigurationCommand extends AbstractMaker
         $this->propertyInfoProvider->setIo($io);
 
         $metadata = $this->doctrineHelper->getMetadata($className);
-        Assert::implementsInterface($metadata, ClassMetadata::class);
+        Assert::implementsInterface($metadata, 'Doctrine\Persistence\Mapping\ClassMetadata');
         $infos = $this->propertyInfoProvider->provide($metadata, $assumeDefaults);
 
         $generator->generateFile($filePath, __DIR__ . '/list_template.tpl.php', [
@@ -123,5 +122,9 @@ final class MakeListConfigurationCommand extends AbstractMaker
 
     public function configureDependencies(DependencyBuilder $dependencies): void
     {
+        $dependencies->addClassDependency(
+            'Doctrine\Persistence\Mapping\ClassMetadata',
+            'doctrine/persistence'
+        );
     }
 }

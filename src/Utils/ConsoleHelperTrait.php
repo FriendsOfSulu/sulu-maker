@@ -5,7 +5,6 @@ namespace FriendsOfSulu\MakerBundle\Utils;
 use BackedEnum;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
-use Symfony\Bundle\MakerBundle\Validator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -68,7 +67,13 @@ trait ConsoleHelperTrait
         }
 
         $entityQuestion = new Question('What entity do you want to generate the admin view for');
-        $entityQuestion->setValidator(Validator::notBlank(...));
+        $entityQuestion->setValidator(static function(mixed $value) {
+            if (!$value) {
+                throw new \InvalidArgumentException('This value cannot be blank.');
+            }
+
+            return $value;
+        });
         $entityQuestion->setAutocompleterValues($doctrineHelper->getEntitiesForAutocomplete());
         $io = new SymfonyStyle($input, new ConsoleOutput());
 

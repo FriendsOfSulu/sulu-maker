@@ -16,7 +16,7 @@ class ListPropertyInfoProvider
     use ConsoleHelperTrait;
 
     public function __construct(
-        private /* readonly */ PropertyToSuluTypeGuesserInterface $typeGuesser
+        /* readonly */ private PropertyToSuluTypeGuesserInterface $typeGuesser
     ) {
     }
 

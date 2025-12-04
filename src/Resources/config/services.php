@@ -5,6 +5,7 @@ use FriendsOfSulu\MakerBundle\Maker\ControllerMaker\MakeControllerCommand;
 use FriendsOfSulu\MakerBundle\Maker\DocumentFixtureMaker\MakeDocumentFixtureCommand;
 use FriendsOfSulu\MakerBundle\Maker\ListConfigurationMaker\ListPropertyInfoProvider;
 use FriendsOfSulu\MakerBundle\Maker\ListConfigurationMaker\MakeListConfigurationCommand;
+use FriendsOfSulu\MakerBundle\Maker\MigrationMaker\MakeMigrationCommand;
 use FriendsOfSulu\MakerBundle\Maker\PreviewMaker\MakePreviewCommand;
 use FriendsOfSulu\MakerBundle\Maker\SuluPageMaker\MakePageTypeCommand;
 use FriendsOfSulu\MakerBundle\Maker\TashHandlerMaker\MakeTrashHandlerCommand;
@@ -77,6 +78,14 @@ return function(ContainerConfigurator $configurator) {
 
     $services
         ->set(MakeWebspaceConfigCommand::class)
+        ->args([
+            '%kernel.project_dir%',
+        ])
+        ->tag('maker.command')
+    ;
+
+    $services
+        ->set(MakeMigrationCommand::class)
         ->args([
             '%kernel.project_dir%',
         ])
